@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Header } from '../../components/layout/Header';
 import { Summary } from '../../components/layout/Summary';
 import { PriceHighlight, TransactionsContainer, Transactionstable } from './style';
+import { SearchForm } from './components/SearchForm';
 
 export const Transactions: FC = () => {
     return (
@@ -11,6 +12,8 @@ export const Transactions: FC = () => {
             <Summary />
 
             <TransactionsContainer>
+                <SearchForm />
+
                 <Transactionstable>
                     <tbody>
                         <tr>
