@@ -1,1 +1,1 @@
-# ignite-dt-money
+# Ignite DT Money
