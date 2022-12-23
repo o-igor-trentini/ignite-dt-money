@@ -94,7 +94,7 @@ Error generating stack: `+o.message+`
     &:hover {
         background: ${({theme:e})=>e["green-700"]};
     }
-`,T1="/assets/logo-8d1ca563.svg",R1=()=>Q(N1,{children:ze(z1,{children:[Q("img",{src:T1,alt:""}),Q($1,{children:"Nova Transação"})]})}),A1=Nt.section`
+`,T1="/ignite-dt-money/assets/logo-8d1ca563.svg",R1=()=>Q(N1,{children:ze(z1,{children:[Q("img",{src:T1,alt:""}),Q($1,{children:"Nova Transação"})]})}),A1=Nt.section`
     width: 100%;
     max-width: 1120px;
     margin: -5rem auto 0;
