@@ -12,6 +12,7 @@ export interface Transaction {
 
 interface TransactionsContextType {
     transactions: Transaction[];
+    getTransactions: (search?: string) => Promise<void>;
 }
 
 export const TransactionsContext = createContext({} as TransactionsContextType);
@@ -23,19 +24,36 @@ interface TransactionsProviderProps {
 export const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-    useEffect(() => {
-        fetch('http://localhost:3333/transactions')
-            .then((response) => response.json())
-            .then((response: Transaction[]) => {
-                for (const i in response) {
-                    response[+i].createdAt = new Date(response[+i].createdAt);
-                }
+    const getTransactions = async (search?: string): Promise<void> => {
+        try {
+            const url = new URL('http://localhost:3333/transactions');
 
-                return response;
-            })
-            .then(setTransactions)
-            .catch(() => alert('Não foi possível buscar as transações!'));
+            if (search) url.searchParams.append('q', search);
+
+            const data = await fetch(url)
+                .then((response) => response.json())
+                .then((response: Transaction[]) => {
+                    for (const i in response) {
+                        response[+i].createdAt = new Date(response[+i].createdAt);
+                    }
+
+                    return response;
+                });
+
+            setTransactions(data);
+        } catch (err: unknown) {
+            console.error(err);
+            alert('Não foi possível buscar as transações!');
+        }
+    };
+
+    useEffect(() => {
+        getTransactions().then();
     }, []);
 
-    return <TransactionsContext.Provider value={{ transactions }}>{children}</TransactionsContext.Provider>;
+    return (
+        <TransactionsContext.Provider value={{ transactions, getTransactions }}>
+            {children}
+        </TransactionsContext.Provider>
+    );
 };
