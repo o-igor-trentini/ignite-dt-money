@@ -1,4 +1,4 @@
-import { createContext, FC, ReactChildren, ReactNode, useEffect, useState } from 'react';
+import { createContext, FC, ReactNode, useEffect, useState } from 'react';
 import { PriceHighlightVariant } from '../pages/Transactions/style';
 
 export interface Transaction {

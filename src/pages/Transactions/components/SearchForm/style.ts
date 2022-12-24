@@ -34,12 +34,17 @@ export const SearchFormContainer = styled.form`
         border-radius: 6px;
         background: transparent;
 
-        &:hover {
+        &:not(:disabled):hover {
             color: ${({ theme }) => theme.white};
             border-color: ${({ theme }) => theme['green-500']};
             background: ${({ theme }) => theme['green-500']};
 
             transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        &:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
     }
 `;
