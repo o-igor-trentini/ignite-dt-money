@@ -6,7 +6,7 @@ import { v4 as uuidV4 } from 'uuid';
 const isDevEnvironment = import.meta.env.DEV;
 
 export const getStoredTransactions = (search?: string): Transaction[] => {
-    const storedTransactions = localStorage.getItem('ignite-dt-money@transactions');
+    const storedTransactions = localStorage.getItem('@ignite-dt-money:transactions');
 
     if (storedTransactions) {
         const data = JSON.parse(storedTransactions) as Transaction[];
@@ -52,7 +52,7 @@ export const getTransactions = async (search?: string): Promise<Transaction[]> =
 };
 
 const createStoredTransaction = (transaction: Transaction): void => {
-    const storedTransactions = localStorage.getItem('ignite-dt-money@transactions');
+    const storedTransactions = localStorage.getItem('@ignite-dt-money:transactions');
 
     let storedData: Transaction[] = [];
 
@@ -63,7 +63,7 @@ const createStoredTransaction = (transaction: Transaction): void => {
     }
 
     storedData.push(transaction);
-    localStorage.setItem('ignite-dt-money@transactions', JSON.stringify(storedData));
+    localStorage.setItem('@ignite-dt-money:transactions', JSON.stringify(storedData));
 };
 
 export const createTransaction = async ({
