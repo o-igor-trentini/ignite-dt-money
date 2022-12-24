@@ -23,6 +23,7 @@ export const Content = styled(Dialog.Content)`
     transform: translate(-50%, -50%);
 
     form {
+        width: 100%;
         margin-top: 2rem;
 
         display: flex;
@@ -47,6 +48,7 @@ export const Content = styled(Dialog.Content)`
         }
 
         button[type='submit'] {
+            width: 100%;
             height: 58px;
             margin-top: 1.5rem;
 
