@@ -1,31 +1,11 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { SummaryCard, SummaryContainer } from './style';
 import { ArrowCircleDown, ArrowCircleUp, CurrencyDollar } from 'phosphor-react';
-import { TransactionsContext } from '../../../contexts/Transactions';
 import { moneyMask } from '../../../utils/formatter';
-
-interface SummaryInformation {
-    income: number;
-    outcome: number;
-    total: number;
-}
+import { useSummary } from '../../../hooks/useSummary';
 
 export const Summary: FC = () => {
-    const { transactions } = useContext(TransactionsContext);
-    const summary = transactions.reduce<SummaryInformation>(
-        (acc, item) => {
-            if (item.type === 'income') {
-                acc.income += item.price;
-                acc.total += item.price;
-            } else {
-                acc.outcome += item.price;
-                acc.total -= item.price;
-            }
-
-            return acc;
-        },
-        { income: 0, outcome: 0, total: 0 },
-    );
+    const { income, outcome, total } = useSummary();
 
     return (
         <SummaryContainer>
@@ -36,7 +16,7 @@ export const Summary: FC = () => {
                     <ArrowCircleUp size={32} />
                 </header>
 
-                <strong>{moneyMask(summary.income)}</strong>
+                <strong>{moneyMask(income)}</strong>
             </SummaryCard>
 
             <SummaryCard iconColor="red">
@@ -46,7 +26,7 @@ export const Summary: FC = () => {
                     <ArrowCircleDown size={32} />
                 </header>
 
-                <strong>{moneyMask(summary.outcome)}</strong>
+                <strong>{moneyMask(outcome)}</strong>
             </SummaryCard>
 
             <SummaryCard variant="green">
@@ -56,7 +36,7 @@ export const Summary: FC = () => {
                     <CurrencyDollar size={32} />
                 </header>
 
-                <strong>{moneyMask(summary.total)}</strong>
+                <strong>{moneyMask(total)}</strong>
             </SummaryCard>
         </SummaryContainer>
     );
