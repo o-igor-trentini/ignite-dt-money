@@ -1,10 +1,13 @@
 import { createContext, FC, ReactNode, useEffect, useState } from 'react';
 import { PriceHighlightVariant } from '../pages/Transactions/style';
-import { api } from '../lib/axios';
-import { AxiosResponse } from 'axios';
+import {
+    createTransaction as createTran,
+    getStoredTransactions,
+    getTransactions as getTran,
+} from '../service/transactions';
 
 export interface Transaction {
-    id: string;
+    id?: string;
     description: string;
     type: PriceHighlightVariant;
     category: string;
@@ -29,17 +32,10 @@ export const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }
 
     const getTransactions = async (search?: string): Promise<void> => {
         try {
-            const { data }: AxiosResponse<Transaction[]> = await api.get('transactions', {
-                params: {
-                    _sort: 'createdAt',
-                    _order: 'desc',
-                    q: search,
-                },
-            });
+            const isDevEnvironment = import.meta.env.DEV;
 
-            for (const i in data) data[+i].createdAt = new Date(data[+i].createdAt);
-
-            setTransactions(data);
+            if (isDevEnvironment) setTransactions(await getTran(search));
+            else setTransactions(getStoredTransactions(search));
         } catch (err: unknown) {
             console.error(err);
             alert('Não foi possível buscar as transações!');
@@ -52,15 +48,14 @@ export const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }
         category,
         description,
     }: Omit<Transaction, 'createdAt' | 'id'>): Promise<void> => {
-        const { data }: AxiosResponse<Transaction> = await api.post('transactions', {
-            description,
-            price,
-            category,
-            type,
-            createdAt: new Date(),
-        } as Transaction);
+        try {
+            const response = await createTran({ description, price, category, type });
 
-        setTransactions((state) => [data, ...state]);
+            setTransactions((state) => [response, ...state]);
+        } catch (err: unknown) {
+            alert('Não foi possível cadastrar uma nova transação!');
+            console.error(err);
+        }
     };
 
     useEffect(() => {
