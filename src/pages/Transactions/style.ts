@@ -30,8 +30,10 @@ export const Transactionstable = styled.table`
     }
 `;
 
+export type PriceHighlightVariant = 'income' | 'outcome';
+
 interface PriceHighlightProps {
-    variant: 'income' | 'outcome';
+    variant: PriceHighlightVariant;
 }
 
 export const PriceHighlight = styled.span<PriceHighlightProps>`

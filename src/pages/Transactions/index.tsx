@@ -1,10 +1,28 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Header } from '../../components/layout/Header';
 import { Summary } from '../../components/layout/Summary';
-import { PriceHighlight, TransactionsContainer, Transactionstable } from './style';
+import { PriceHighlight, PriceHighlightVariant, TransactionsContainer, Transactionstable } from './style';
 import { SearchForm } from './components/SearchForm';
 
+interface Transaction {
+    id: string;
+    description: string;
+    type: PriceHighlightVariant;
+    category: string;
+    price: string;
+    createdAt: string;
+}
+
 export const Transactions: FC = () => {
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+    useEffect(() => {
+        fetch('http://localhost:3333/transactions')
+            .then((response) => response.json())
+            .then(setTransactions)
+            .catch(() => alert('Não foi possível buscar as transações!'));
+    }, []);
+
     return (
         <div>
             <Header />
@@ -16,23 +34,16 @@ export const Transactions: FC = () => {
 
                 <Transactionstable>
                     <tbody>
-                        <tr>
-                            <td width="50%">Desenvolvimento de site</td>
-                            <td>
-                                <PriceHighlight variant="income">R$ 12.000,00</PriceHighlight>
-                            </td>
-                            <td>Venda</td>
-                            <td>13/04/2022</td>
-                        </tr>
-
-                        <tr>
-                            <td width="50%">Hamburguer</td>
-                            <td>
-                                <PriceHighlight variant="outcome">-R$ 12.000,00</PriceHighlight>
-                            </td>
-                            <td>Venda</td>
-                            <td>13/04/2022</td>
-                        </tr>
+                        {transactions.map(({ id, description, type, price, category, createdAt }) => (
+                            <tr key={id}>
+                                <td width="50%">{description}</td>
+                                <td>
+                                    <PriceHighlight variant={type}>{price}</PriceHighlight>
+                                </td>
+                                <td>{category}</td>
+                                <td>{createdAt}</td>
+                            </tr>
+                        ))}
                     </tbody>
                 </Transactionstable>
             </TransactionsContainer>
