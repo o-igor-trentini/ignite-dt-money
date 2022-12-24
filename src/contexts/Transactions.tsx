@@ -7,7 +7,7 @@ export interface Transaction {
     type: PriceHighlightVariant;
     category: string;
     price: number;
-    createdAt: string;
+    createdAt: Date;
 }
 
 interface TransactionsContextType {
@@ -26,6 +26,13 @@ export const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }
     useEffect(() => {
         fetch('http://localhost:3333/transactions')
             .then((response) => response.json())
+            .then((response: Transaction[]) => {
+                for (const i in response) {
+                    response[+i].createdAt = new Date(response[+i].createdAt);
+                }
+
+                return response;
+            })
             .then(setTransactions)
             .catch(() => alert('Não foi possível buscar as transações!'));
     }, []);

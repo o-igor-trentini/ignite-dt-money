@@ -2,6 +2,7 @@ import { FC, useContext } from 'react';
 import { SummaryCard, SummaryContainer } from './style';
 import { ArrowCircleDown, ArrowCircleUp, CurrencyDollar } from 'phosphor-react';
 import { TransactionsContext } from '../../../contexts/Transactions';
+import { moneyMask } from '../../../utils/formatter';
 
 interface SummaryInformation {
     income: number;
@@ -35,7 +36,7 @@ export const Summary: FC = () => {
                     <ArrowCircleUp size={32} />
                 </header>
 
-                <strong>{summary.income}</strong>
+                <strong>{moneyMask(summary.income)}</strong>
             </SummaryCard>
 
             <SummaryCard iconColor="red">
@@ -45,7 +46,7 @@ export const Summary: FC = () => {
                     <ArrowCircleDown size={32} />
                 </header>
 
-                <strong>{summary.outcome}</strong>
+                <strong>{moneyMask(summary.outcome)}</strong>
             </SummaryCard>
 
             <SummaryCard variant="green">
@@ -55,7 +56,7 @@ export const Summary: FC = () => {
                     <CurrencyDollar size={32} />
                 </header>
 
-                <strong>{summary.total}</strong>
+                <strong>{moneyMask(summary.total)}</strong>
             </SummaryCard>
         </SummaryContainer>
     );
