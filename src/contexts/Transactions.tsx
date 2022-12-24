@@ -1,5 +1,7 @@
 import { createContext, FC, ReactNode, useEffect, useState } from 'react';
 import { PriceHighlightVariant } from '../pages/Transactions/style';
+import { api } from '../lib/axios';
+import { AxiosResponse } from 'axios';
 
 export interface Transaction {
     id: string;
@@ -26,19 +28,15 @@ export const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }
 
     const getTransactions = async (search?: string): Promise<void> => {
         try {
-            const url = new URL('http://localhost:3333/transactions');
+            const { data }: AxiosResponse<Transaction[]> = await api.get('transactions', {
+                params: {
+                    q: search,
+                },
+            });
 
-            if (search) url.searchParams.append('q', search);
-
-            const data = await fetch(url)
-                .then((response) => response.json())
-                .then((response: Transaction[]) => {
-                    for (const i in response) {
-                        response[+i].createdAt = new Date(response[+i].createdAt);
-                    }
-
-                    return response;
-                });
+            for (const i in data) {
+                data[+i].createdAt = new Date(data[+i].createdAt);
+            }
 
             setTransactions(data);
         } catch (err: unknown) {
