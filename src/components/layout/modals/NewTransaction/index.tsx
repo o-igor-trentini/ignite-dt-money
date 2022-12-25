@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { CloseButton, Content, Overlay, TransactionType, TransactionTypeButton } from './style';
 import { ArrowCircleDown, ArrowCircleUp, X } from 'phosphor-react';
@@ -6,6 +6,7 @@ import * as z from 'zod';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { TransactionsContext } from '../../../../contexts/Transactions';
+import { useContextSelector } from 'use-context-selector';
 
 const newTransactionFormSchema = z.object({
     description: z.string(),
@@ -29,7 +30,7 @@ export const NewTransactionModal: FC = () => {
             type: 'income',
         },
     });
-    const { createTransaction } = useContext(TransactionsContext);
+    const createTransaction = useContextSelector(TransactionsContext, (contenxt) => contenxt.createTransaction);
 
     const handleCreateNewTransaction = async ({ description, price, category, type }: NewTransactionFormInputs) => {
         createTransaction({ description, price, category, type }).then();

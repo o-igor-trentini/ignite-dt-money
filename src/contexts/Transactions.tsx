@@ -1,10 +1,11 @@
-import { createContext, FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { PriceHighlightVariant } from '../pages/Transactions/style';
 import {
     createTransaction as createTran,
     getStoredTransactions,
     getTransactions as getTran,
 } from '../service/transactions';
+import { createContext } from 'use-context-selector';
 
 export interface Transaction {
     id?: string;
@@ -30,7 +31,7 @@ interface TransactionsProviderProps {
 export const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }) => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-    const getTransactions = async (search?: string): Promise<void> => {
+    const getTransactions = useCallback(async (search?: string): Promise<void> => {
         try {
             const isDevEnvironment = import.meta.env.DEV;
 
@@ -40,27 +41,25 @@ export const TransactionsProvider: FC<TransactionsProviderProps> = ({ children }
             console.error(err);
             alert('Não foi possível buscar as transações!');
         }
-    };
+    }, []);
 
-    const createTransaction = async ({
-        type,
-        price,
-        category,
-        description,
-    }: Omit<Transaction, 'createdAt' | 'id'>): Promise<void> => {
-        try {
-            const response = await createTran({ description, price, category, type });
+    const createTransaction = useCallback(
+        async ({ type, price, category, description }: Omit<Transaction, 'createdAt' | 'id'>): Promise<void> => {
+            try {
+                const response = await createTran({ description, price, category, type });
 
-            setTransactions((state) => [response, ...state]);
-        } catch (err: unknown) {
-            alert('Não foi possível cadastrar uma nova transação!');
-            console.error(err);
-        }
-    };
+                setTransactions((state) => [response, ...state]);
+            } catch (err: unknown) {
+                alert('Não foi possível cadastrar uma nova transação!');
+                console.error(err);
+            }
+        },
+        [],
+    );
 
     useEffect(() => {
         getTransactions().then();
-    }, []);
+    }, [getTransactions]);
 
     return (
         <TransactionsContext.Provider value={{ transactions, getTransactions, createTransaction }}>

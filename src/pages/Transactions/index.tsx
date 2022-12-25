@@ -1,13 +1,14 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { Header } from '../../components/layout/Header';
 import { Summary } from '../../components/layout/Summary';
 import { PriceHighlight, TransactionsContainer, Transactionstable } from './style';
 import { SearchForm } from './components/SearchForm';
 import { TransactionsContext } from '../../contexts/Transactions';
 import { dateMask, moneyMask } from '../../utils/formatter';
+import { useContextSelector } from 'use-context-selector';
 
 export const Transactions: FC = () => {
-    const { transactions } = useContext(TransactionsContext);
+    const transactions = useContextSelector(TransactionsContext, (contenxt) => contenxt.transactions);
 
     return (
         <div>
