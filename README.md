@@ -20,6 +20,7 @@ Me veja em funcionamento [clicando aqui][] ***:)***
 - Styled Components
 - React Hook Form
 - Zod
+- Radix UI
 
 ## Instalando / Começando
 

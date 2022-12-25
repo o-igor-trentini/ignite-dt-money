@@ -22,6 +22,17 @@ export const Content = styled(Dialog.Content)`
     background: ${({ theme }) => theme['gray-800']};
     transform: translate(-50%, -50%);
 
+    @media (max-width: 768px) {
+        width: 100vw;
+        min-width: auto;
+        top: auto;
+        left: 50%;
+        bottom: 0;
+        transform: translate(-50%);
+
+        border-radius: 20px 20px 0 0;
+    }
+
     form {
         width: 100%;
         margin-top: 2rem;

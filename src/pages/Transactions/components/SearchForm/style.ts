@@ -46,5 +46,11 @@ export const SearchFormContainer = styled.form`
             opacity: 0.6;
             cursor: not-allowed;
         }
+
+        @media (max-width: 768px) {
+            span {
+                display: none;
+            }
+        }
     }
 `;
