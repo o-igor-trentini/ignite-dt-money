@@ -9,6 +9,15 @@ export const SummaryContainer = styled.section`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
+
+    @media (max-width: 768px) {
+        overflow-y: scroll;
+
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    }
 `;
 
 type SummaryCardIconColor = 'gray' | 'green' | 'red';
@@ -20,6 +29,10 @@ interface SummaryCardProps {
 
 /*eslint-disable*/
 export const SummaryCard = styled.div<SummaryCardProps>`
+  @media (max-width: 768px) {
+    min-width: 17.5rem;
+  } 
+
     padding: 2rem;
 
     border-radius: 6px;
